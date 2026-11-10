@@ -1,9 +1,9 @@
 import pickle
 from pathlib import Path
-from typing import Any
+
 import numpy as np
-import pandas as pd
 import shap
+
 from .data_preprocessing import build_feature_frame, validate_sensor_window
 
 ACTIVITY_LABELS = {
@@ -18,23 +18,25 @@ ACTIVITY_LABELS = {
 
 class HARInference:
 
-    def __init__(self, model_dir: Path | None = None) -> None:
+    def __init__(self, model_dir=None):
         root = Path(__file__).resolve().parents[1]
         artifact_dir = model_dir or root / "model"
         with (artifact_dir / "har_rf_model.pkl").open("rb") as model_file:
-            self.model: Any = pickle.load(model_file)
+            self.model = pickle.load(model_file)
         with (artifact_dir / "feature_columns.pkl").open("rb") as columns_file:
-            self.feature_columns: list[str] = pickle.load(columns_file)
+            self.feature_columns = pickle.load(columns_file)
 
-    def features(self, data: dict[str, list[float]]) -> pd.DataFrame:
+    def features(self, data):
         validate_sensor_window(data)
         return build_feature_frame(data, self.feature_columns)
 
-    def predict(self, data: dict[str, list[float]]) -> dict[str, Any]:
+    def predict(self, data):
         features = self.features(data)
         prediction = self.model.predict(features)[0]
         probabilities = self.model.predict_proba(features)[0]
-        classes = getattr(self.model, "classes_", range(1, len(probabilities) + 1))
+        classes = getattr(
+            self.model, "classes_", range(1, len(probabilities) + 1)
+        )
         return {
             "activity": ACTIVITY_LABELS[int(prediction)],
             "confidence": float(probabilities.max()),
@@ -44,7 +46,7 @@ class HARInference:
             },
         }
 
-    def explain(self, data: dict[str, list[float]], top_n: int = 15) -> dict[str, Any]:
+    def explain(self, data, top_n=15):
         features = self.features(data)
         prediction = self.model.predict(features)[0]
         classes = list(getattr(self.model, "classes_", range(1, 7)))
