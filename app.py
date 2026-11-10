@@ -18,12 +18,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # fine for a portfolio project; a real product would restrict this
+    allow_origins=[
+        "*"
+    ],  # fine for a portfolio project; a real product would restrict this
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 inference = HARInference()
+
 
 # ---------- Request schema ----------
 class SensorWindow(BaseModel):
@@ -36,6 +39,7 @@ class SensorWindow(BaseModel):
     total_acc_x: list[float] = Field(..., min_length=128, max_length=128)
     total_acc_y: list[float] = Field(..., min_length=128, max_length=128)
     total_acc_z: list[float] = Field(..., min_length=128, max_length=128)
+
 
 @app.post("/predict")
 def predict(data: SensorWindow):
@@ -63,6 +67,7 @@ def explain(data: SensorWindow):
     except (TypeError, ValueError) as error:
         logger.warning("Explanation validation failed: %s", error)
         raise HTTPException(status_code=422, detail=str(error)) from error
+
 
 @app.get("/health")
 def health():

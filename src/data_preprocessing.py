@@ -32,7 +32,9 @@ def time_domain_features(window: np.ndarray) -> dict[str, float]:
     }
 
 
-def freq_domain_features(window: np.ndarray, sampling_rate: int = 50) -> dict[str, float]:
+def freq_domain_features(
+    window: np.ndarray, sampling_rate: int = 50
+) -> dict[str, float]:
     """Return Welch power-spectrum features for one sensor channel."""
     freqs, psd = welch(window, fs=sampling_rate, nperseg=len(window))
     psd_sum = float(psd.sum())
@@ -68,9 +70,7 @@ def gravity_features(
 def build_feature_row(data: Mapping[str, Sequence[float]]) -> dict[str, float]:
     """Build the trained model's 63-feature row from a raw sensor window."""
     row: dict[str, float] = {}
-    channels = {
-        name: np.asarray(data[name], dtype=float) for name in SENSOR_CHANNELS
-    }
+    channels = {name: np.asarray(data[name], dtype=float) for name in SENSOR_CHANNELS}
     for name, window in channels.items():
         for feature_name, value in time_domain_features(window).items():
             row[f"{name}_{feature_name}"] = value
@@ -100,7 +100,9 @@ def build_feature_frame(
     missing = [column for column in feature_columns if column not in row]
     if missing:
         raise ValueError(f"Missing expected features: {missing}")
-    return pd.DataFrame([[row[column] for column in feature_columns]], columns=feature_columns)
+    return pd.DataFrame(
+        [[row[column] for column in feature_columns]], columns=feature_columns
+    )
 
 
 def validate_sensor_window(data: Mapping[str, Any], window_length: int = 128) -> None:
