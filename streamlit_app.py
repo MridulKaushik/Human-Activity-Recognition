@@ -3,11 +3,12 @@ import streamlit as st
 import requests
 import json
 import logging
+import os
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-
 import plotly.graph_objects as go
+from streamlit.errors import StreamlitSecretNotFoundError
 
 logging.basicConfig(
     level=logging.INFO,
@@ -17,7 +18,12 @@ logger = logging.getLogger("har.dashboard")
 
 st.set_page_config(page_title="HAR Activity Classifier", layout="centered")
 
-API_URL = st.secrets.get("API_URL", "http://127.0.0.1:8000/predict")
+try:
+    API_URL = st.secrets.get("API_URL")
+except StreamlitSecretNotFoundError:
+    API_URL = None
+
+API_URL = API_URL or os.getenv("API_URL", "http://127.0.0.1:8000/predict")
 EXPLAIN_URL = API_URL.rsplit("/", 1)[0] + "/explain"
 FEEDBACK_FILE = Path("feedback.csv")
 
