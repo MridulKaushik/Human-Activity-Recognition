@@ -7,6 +7,8 @@ on:
 jobs:
   quality:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -34,4 +36,4 @@ jobs:
         run: mypy --ignore-missing-imports app.py src
       
       - name: Run pytest with coverage
-        run: pytest --cov=src --cov=app tests/
+        run: python -m pytest --cov=src --cov=app tests/
