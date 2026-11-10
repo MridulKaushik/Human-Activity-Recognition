@@ -190,18 +190,18 @@ if result is not None:
 
 st.divider()
 
-# ---------- Model comparison context ----------
-st.subheader("Model comparison")
-st.markdown("""
-This dashboard serves the Random Forest model, which outperformed a CNN and LSTM
-trained directly on raw signals:
+# # ---------- Model comparison context ----------
+# st.subheader("Model comparison")
+# st.markdown("""
+# This dashboard serves the Random Forest model, which outperformed a CNN and LSTM
+# trained directly on raw signals:
 
-| Model | Accuracy | Sitting F1 | Standing F1 |
-|---|---|---|---|
-| **Random Forest (engineered features)** | **0.95** | **0.93** | **0.94** |
-| CNN (raw signals) | 0.94 | 0.85 | 0.87 |
-| LSTM, pooled (raw signals) | 0.92 | 0.81 | 0.85 |
+# | Model | Accuracy | Sitting F1 | Standing F1 |
+# |---|---|---|---|
+# | **Random Forest (engineered features)** | **0.95** | **0.93** | **0.94** |
+# | CNN (raw signals) | 0.94 | 0.85 | 0.87 |
+# | LSTM, pooled (raw signals) | 0.92 | 0.81 | 0.85 |
 
-Hand-engineered gravity/orientation features gave the classical model a clear edge on
-static postures (sitting, standing), where motion-based deep learning features struggled.
-""")
+# Hand-engineered gravity/orientation features gave the classical model a clear edge on
+# static postures (sitting, standing), where motion-based deep learning features struggled.
+# """)
