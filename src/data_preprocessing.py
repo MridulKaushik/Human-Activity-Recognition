@@ -20,9 +20,7 @@ def time_domain_features(window):
         "rms": float(np.sqrt(np.mean(window**2))),
         "min": float(np.min(window)),
         "max": float(np.max(window)),
-        "zero_crossing_rate": float(
-            ((centered[:-1] * centered[1:]) < 0).sum()
-        ),
+        "zero_crossing_rate": float(((centered[:-1] * centered[1:]) < 0).sum()),
     }
 
 
@@ -33,9 +31,7 @@ def freq_domain_features(window, sampling_rate=50):
     return {
         "dominant_freq": float(freqs[np.argmax(psd)]),
         "spectral_energy": float(np.sum(psd**2)),
-        "spectral_entropy": float(
-            -np.sum(psd_norm * np.log2(psd_norm + 1e-12))
-        ),
+        "spectral_entropy": float(-np.sum(psd_norm * np.log2(psd_norm + 1e-12))),
     }
 
 
@@ -58,9 +54,7 @@ def gravity_features(total_acc_x, total_acc_y, total_acc_z):
 
 def build_feature_row(data):
     row = {}
-    channels = {
-        name: np.asarray(data[name], dtype=float) for name in SENSOR_CHANNELS
-    }
+    channels = {name: np.asarray(data[name], dtype=float) for name in SENSOR_CHANNELS}
     for name, window in channels.items():
         for feature_name, value in time_domain_features(window).items():
             row[f"{name}_{feature_name}"] = value
@@ -71,20 +65,12 @@ def build_feature_row(data):
         axis: np.asarray(data[f"total_acc_{axis}"], dtype=float)
         for axis in ("x", "y", "z")
     }
-    row.update(
-        gravity_features(total_acc["x"], total_acc["y"], total_acc["z"])
-    )
+    row.update(gravity_features(total_acc["x"], total_acc["y"], total_acc["z"]))
     row.update(
         {
-            "corr_xy": safe_corr(
-                channels["body_acc_x"], channels["body_acc_y"]
-            ),
-            "corr_xz": safe_corr(
-                channels["body_acc_x"], channels["body_acc_z"]
-            ),
-            "corr_yz": safe_corr(
-                channels["body_acc_y"], channels["body_acc_z"]
-            ),
+            "corr_xy": safe_corr(channels["body_acc_x"], channels["body_acc_y"]),
+            "corr_xz": safe_corr(channels["body_acc_x"], channels["body_acc_z"]),
+            "corr_yz": safe_corr(channels["body_acc_y"], channels["body_acc_z"]),
         }
     )
     return row
