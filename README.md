@@ -97,17 +97,40 @@ Feedback is intentionally lightweight: the dashboard appends an ISO-8601 timesta
 
 ### Running locally
 
+From the project directory, create and activate a Python virtual environment, then
+install the dependencies:
+
 ```bash
 python -m venv venv
-source venv/bin/activate      # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Terminal 1
-uvicorn app:app --reload
-
-# Terminal 2
-streamlit run streamlit_app.py
+.\venv\Scripts\activate
+python -m pip install -r requirements.txt
 ```
+
+If PowerShell blocks script activation, allow local scripts once:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+Start the FastAPI backend in the first terminal:
+
+```powershell
+python -m uvicorn app:app --reload
+```
+
+In a second terminal, activate the same virtual environment and start the
+Streamlit dashboard:
+
+```powershell
+cd "C:\Users\costu\OneDrive\Documents\Coding\Projects\Human-activity-recognition"
+.\venv\Scripts\Activate.ps1
+python -m streamlit run streamlit_app.py
+```
+
+Open the Streamlit URL shown in the terminal, usually
+`http://localhost:8501`. The API is available at `http://127.0.0.1:8000`,
+with interactive documentation at `http://127.0.0.1:8000/docs`.
+
 
 ### Docker
 
