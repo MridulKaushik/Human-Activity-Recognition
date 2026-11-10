@@ -1,13 +1,7 @@
-from __future__ import annotations
-
-from pathlib import Path
-from typing import Any
-
 import pickle
 
 
-def save_model_artifacts(model: Any, feature_columns: list[str], output_dir: Path) -> None:
-
+def save_model_artifacts(model, feature_columns, output_dir):
     output_dir.mkdir(parents=True, exist_ok=True)
     with (output_dir / "har_rf_model.pkl").open("wb") as model_file:
         pickle.dump(model, model_file)
