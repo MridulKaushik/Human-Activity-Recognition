@@ -2,4 +2,4 @@ venv/
 __pycache__/
 *.pyc
 .streamlit/
-har-CNN_LSTM.ipynb
+har_CNN_LSTM.ipynb
