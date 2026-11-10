@@ -77,8 +77,8 @@ it uses `http://127.0.0.1:8000/predict`.
 From the project directory, create and activate a Python virtual environment:
 
 ```powershell
-py -m venv venv
-.\venv\Scripts\Activate.ps1
+python -m venv venv
+.\venv\Scripts\activate
 python -m pip install -r requirements.txt
 ```
 
@@ -97,8 +97,8 @@ python -m uvicorn app:app --reload
 In a second terminal, activate the environment and start the dashboard:
 
 ```powershell
-cd "C:\Users\costu\OneDrive\Documents\Coding\Projects\Human-activity-recognition"
-.\venv\Scripts\Activate.ps1
+cd "<File-Path>\Human-activity-recognition"
+.\venv\Scripts\activate
 python -m streamlit run streamlit_app.py
 ```
 
