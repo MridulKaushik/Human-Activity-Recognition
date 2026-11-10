@@ -34,9 +34,7 @@ class HARInference:
         features = self.features(data)
         prediction = self.model.predict(features)[0]
         probabilities = self.model.predict_proba(features)[0]
-        classes = getattr(
-            self.model, "classes_", range(1, len(probabilities) + 1)
-        )
+        classes = getattr(self.model, "classes_", range(1, len(probabilities) + 1))
         return {
             "activity": ACTIVITY_LABELS[int(prediction)],
             "confidence": float(probabilities.max()),
